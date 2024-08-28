@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Нумерологический калькулятор</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Jost, sans-serif;
+            background-color: #111;
+            color: #FFFFFF;
+            padding: 0;
+            margin: 0;
+        }
+        .container {
+    background: #FFFFFF;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.10);
+    max-width: 390px;
+    width: 100%;
+    padding-right: 20px;
+    box-sizing: border-box;
+    margin-top: 40px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 40px;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding-top: 35px;
+    padding-bottom: 11px;
+    border-radius: 15px;
+    padding-left: 20px;
+        }
+        .logo-container {
+    /* [disabled]margin-top: 100px; */
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 50px;
+    max-width: 90%;
+    width: auto;
+    text-align: center;
+        }
+        .logo-container img {
+    height: auto;
+    width: 93%;
+    text-align: center;
+        }
+        h1 {
+    font-size: 21px;
+    margin: -15px 0 20px;
+    color: #000000;
+    width: 100%;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+    font-size: 18px;
+    margin-top: -10px;
+    margin-right: -10px;
+    margin-left: -10px;
+    margin-bottom: -10px;
+    color: #000000;
+    text-align: left;
+        }
+        input[type=date] {
+    padding-top: 12px;
+    padding-right: 2px;
+    padding-left: 2px;
+    padding-bottom: 12px;
+    font-size: 18px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    text-align: center;
+    width: 260px;
+    max-width: 768px;
+    margin-bottom: 13px;
+    background-color: #F0F0F0;
+    color: #000000;
+    margin-top: -94px;
+    cursor: pointer;
+        }
+        button {
+    background-color: #007ECD;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color .3s;
+    margin-top: 25px;
+    width: 240px;
+    max-width: 275px;
+    transform: scale(1);
+        }
+        button:hover {
+    background-color: #005e99;
+    transform: scale(1.03);
+        }
+        .result {
+    margin-top: -9px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 100px;
+    text-align: left;
+    width: auto;
+    max-width: none;
+    color: #000000;
+    font-size: 35px;
+        }
+        .result p {
+    font-size: 19px;
+    margin-top: 10px;
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 15px;
+    color: #000000;
+    cursor: pointer;
+    transition: color .3s, transform .3s;
+    position: relative;
+        }
+        .result p:hover {
+    color: #000000;
+        }
+        .result p span {
+            font-weight: 900;
+            color: #000000;
+        }
+        .info-text {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #fff;
+            max-width: 80%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo-container">
+        <img src="https://static.tildacdn.com/tild6435-3839-4130-a136-626434333065/__800_x_100__2.png" alt="Логотип" class="logo">
+        <h1 style="width: 100%; text-align: center;">НУМЕРОЛОГИЧЕСКИЙ КАЛЬКУЛЯТОР</h1>
+        <form id="numCalcForm" onkeyup="13 === event.keyCode && calculateNumerology()">
+            <div class="result" id="result"></div>
+            <input type="date" id="birthdate" name="birthdate" required>
+            <label for="birthdate" style="font-size: 16px">Введи  дату рождения</label>
+            <button type="button" onclick="calculateNumerology()">Рассчитать</button>
+        </form>
+    </div>
+    <script>
+        function reduceToOneDigit(number) {
+            while (number >= 23) {
+                number = number.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+            }
+            return number;
+        }
+
+        function getDescription(type, number) {
+            const descriptions = {
+                personality: {
+                    1:"<p><strong>Ты лидер от природы.</strong> Уверен в себе, самостоятельный и всегда стремишься к новым вершинам. Тебе нравится быть первым и руководить. Твоя энергия и энтузиазм заразительны для окружающих. Ты пришел в этот мир, что бы делать прорыв в любом деле.</p><p><strong>➕ Плюсы:</strong></p><ul><li>Лидерство и решительность</li><li>Уверенность в себе</li><li>Способность брать ответственность</li><li>Успех в любой области</li><li>Здоровый эгоизм</li></ul><p><strong>➖ Минусы:</strong></p><ul><li>Склонность командовать</li><li>Нетерпимость к слабостям других</li><li>Иногда слишком независим</li><li>Звездная болезнь</li><li>Гордыня</li></ul><p><strong>⭐️ Рекомендации:</strong></p><ul><li>Учись слушать других и принимать их мнения</li><li>Развивай терпение</li><li>Делись обязанностями и работай в команде</li><li>Отсеивай людей, кто тебя не вдохновляет</li><li>Создавай свой круг людей, где ты сможешь проявить себя лидером и при этом чувствовать себя комфортно</li></ul>",
+                    2: "<p><strong>Ты человек - дипломат.</strong> Ты хорошо понимаешь чувства других и стремишься к гармонии. Твое обаяние и дружелюбие помогают налаживать отношения. Ты ценишь партнерство и умеешь работать в команде.</p><p><strong>➕ Плюсы:</strong></p><ul><li>Хорошо развита интуиция</li><li>Способность к миротворчеству</li><li>Эмпатия и понимание</li><li>Хорошие слушатели</li><li>Дружелюбие</li><li>Мудрость</li></ul><p><strong>➖ Минусы:</strong></p><ul><li>Сложно выражать свои чувства</li><li>Склонность уступать слишком часто</li><li>Трудности с принятием решений</li><li>Зависимость от мнений других</li><li>Зависть</li><li>Тщеславие</li></ul><p><strong>⭐️ Рекомендации:</strong></p><ul><li>Учись быть более решительным</li><li>Развивай свою уверенность</li><li>Практикуй самостоятельное принятие решений</li><li>Учись выстраивать гармоничные отношения в семье</li><li>Работай над проявлением чувств</li></ul>",
+                    3: "<p><strong>Ты творческий и общительный человек.</strong>&nbsp;Ты полон энергии и оптимизма, часто проявляешь себя в искусстве. Твоя общительность и чувство юмора делают тебя популярным в любом кругу.&nbsp;</p><p><strong>➕ Плюсы:</strong></p><ul><li>Творческое мышление</li><li>Высокий уровень энергии</li><li>Женственность (Для женщин)</li><li>Любовь к животным и природе</li><li>Обаяние</li><li>Красота</li></ul><p><strong>➖ Минусы:</strong></p><ul><li>Склонность к поверхностности</li><li>Нестабильное настроение</li><li>Иногда слишком эгоцентричен</li><li>Закрытость</li><li>Недоверие</li><li>Властность</li><li>Гиперопека</li></ul><p><strong>⭐️ Рекомендации:</strong></p><ul><li>Старайся глубже изучать интересующие тебя темы</li><li>Работай над стабильностью эмоций</li><li>Уделяй внимание чувствам других</li><li>Развивай в себе женскую энергию (Для женщин)</li><li>Тебе важно самореализоваться (Для женщин)</li><li>Проявляй в себе мужские качества (Для мужчин)</li><li>Будь ответственным и хозяином свой жизни (Для мужчин)&nbsp;</li></ul>",
+                    4: "<p><strong>Ты практичный и надежный.</strong>&nbsp;Ты ценишь порядок и стабильность, любишь планировать и организовывать. Часто такой человек как ты, становится руководителем, благодаря своим организаторским способностям.</p><p><strong>➕ Плюсы:</strong></p><ul><li>Трудолюбие</li><li>Надежность</li><li>Организаторские способности</li><li>Способность стать руководителем</li><li>Иметь свой бизнес (и не один)</li><li>Лидерские качества</li></ul><p><strong>➖ Минусы:</strong></p><ul><li>Склонность к перфекционизму</li><li>Негибкость</li><li>Риск выгорания</li><li>Безответственность</li><li>Инфантильность</li></ul><p><strong>⭐️ Рекомендации:</strong></p><ul><li>Учись быть более гибким</li><li>Развивай творческое мышление</li><li>Найди баланс между работой и отдыхом</li><li>Для женщин необходимо раскрыть свою женственность</li><li>Учись реализовывать себя в социуме</li><li>Для мужчин важно реализовать себя в деле&nbsp;</li></ul>",
+                    5: "<p><strong>Ты&nbsp;прирожденный учитель. </strong>Любишь свободу и приключения. Ты постоянно ищешь новые знания и впечатления. Твое природное любопытство и общительность помогают находить общий язык с разными людьми.</p><p><strong>➕ Плюсы:</strong></p><ul><li>Любовь к новому</li><li>Передача знаний</li><li>Адаптивность</li><li>Стремление к добру</li><li>Отличные коммуникативные навыки</li><li>Любовь к книгам</li></ul><p><strong>➖ Минусы:</strong></p><ul><li>Безразличие</li><li>Неустойчивость</li><li>Думаешь, что знаешь лучше всех</li><li>Склонность к поверхностности</li><li>В семье и окружении вечно всех поучаешь</li></ul><p><strong>⭐️ Рекомендации:</strong></p><ul><li>Тебе важно передавать накопленные знания в мир</li><li>Старайся передавать знания тем, кому это действительно необходимо</li><li>Хорошо пойдет наставничество</li><li>Работай над последовательностью</li><li>Развивай самообладание и концентрацию</li></ul>",
+                    6: "Вы заботливый и ответственный.",
+                    7: "Вы аналитический и духовный.",
+                    8: "Вы амбициозный и целеустремленный человек.",
+                    9: "Вы сострадательный и щедрый.",
+                   10: "Для вас все возмжно что хотите.",
+                   11: "Для вас все возмжно что хотите.",
+                   12: "Для вас все возмжно что хотите.",
+                   13: "Для вас все возмжно что хотите.",
+                   14: "Для вас все возмжно что хотите.",
+                   15: "Для вас все возмжно что хотите.",
+                   16: "Для вас все возмжно что хотите.",
+                   17: "Для вас все возмжно что хотите.",
+                   18: "Для вас все возмжно что хотите.",
+                   19: "Для вас все возмжно что хотите.",
+                   20: "Для вас все возмжно что хотите.",
+                   21: "Для вас все возмжно что хотите.",
+                   22: "Для вас все возмжно что хотите."
+                },
+                spirituality: {
+                    1: "Ваш духовный путь связан с лидерством и инициативой.",
+                    2: "Вы ищете гармонию и баланс в духовной сфере.",
+                    3: "Ваш духовный рост связан с самовыражением и творчеством.",
+                    4: "Вы ищете стабильность и порядок в духовной жизни.",
+                    5: "Вы открыты для новых духовных опытов.",
+                    6: "Ваша духовность основана на любви и заботе о других.",
+                    7: "Вы стремитесь к глубокому пониманию и мудрости.",
+                    8: "Ваш духовный путь связан с успехом и достижениями.",
+                    9: "Вы стремитесь к духовному служению и альтруизму."
+                },
+                finance: {
+                    1: "Ваш успех в финансах зависит от вашей инициативы и лидерства.",
+                    2: "Вам важно сотрудничество и партнерство в финансовых делах.",
+                    3: "Вы можете добиться успеха в креативных и социальных проектах.",
+                    4: "Ваш финансовый успех связан с упорным трудом и дисциплиной.",
+                    5: "Вы можете зарабатывать, принимая риски и пробуя новое.",
+                    6: "Ваш финансовый успех связан с ответственностью и заботой.",
+                    7: "Ваш успех в финансах связан с аналитическими способностями и исследованиями.",
+                    8: "Ваш финансовый успех придет через амбиции и руководство.",
+                    9: "Вы можете зарабатывать, помогая другим и участвуя в благотворительности."
+                },
+                relationships: {
+                    1: "Вы лидер в отношениях, стремитесь к независимости.",
+                    2: "Вы цените гармонию и сотрудничество в отношениях.",
+                    3: "Вы выражаете свои чувства открыто и креативно.",
+                    4: "Вы надежный и стабильный партнер.",
+                    5: "Вы ищете разнообразия и свободы в отношениях.",
+                    6: "Вы заботливый и преданный партнер.",
+                    7: "Вы цените глубину и понимание в отношениях.",
+                    8: "Вы стремитесь к успеху и влиянию в отношениях.",
+                    9: "Вы сострадательный и щедрый партнер."
+                },
+                health: {
+                    1: "Ваше здоровье зависит от вашей активности и уверенности.",
+                    2: "Вам важно поддерживать эмоциональное равновесие для здоровья.",
+                    3: "Вы должны выражать свои чувства для поддержания здоровья.",
+                    4: "Ваше здоровье укрепляется через стабильность и дисциплину.",
+                    5: "Вы чувствуете себя лучше, когда ведете активный образ жизни.",
+                    6: "Ваше здоровье связано с заботой и любовью к себе и другим.",
+                    7: "Вам важно уделять внимание духовному и интеллектуальному развитию.",
+                    8: "Ваше здоровье зависит от вашего успеха и уверенности в себе.",
+                    9: "Вы чувствуете себя лучше, когда помогаете другим и участвуете в благотворительности."
+                }
+            };
+            return descriptions[type][number];
+        }
+
+        function calculateNumerology() {
+            const birthdate = new Date(document.getElementById('birthdate').value);
+            const day = birthdate.getDate();
+            const month = birthdate.getMonth() + 1;
+            const year = birthdate.getFullYear();
+            const personality = reduceToOneDigit(day);
+            const spirituality = reduceToOneDigit(month);
+            const finance = reduceToOneDigit(year.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0));
+            const relationships = reduceToOneDigit(personality + spirituality + finance);
+            const health = reduceToOneDigit(personality + spirituality + finance + relationships);
+            document.getElementById('result').innerHTML = `
+                <p class="result-item" data-type="personality" data-number="${personality}"><span>✅ ЛИЧНОСТЬ:</span> <span class="number">${personality}</span> - <em>Нажми, чтобы узнать подробнее</em></p>
+                <hr>
+                <p class="result-item" data-type="spirituality" data-number="${spirituality}"><span>✅ ДУХОВНОСТЬ:</span> <span class="number">${spirituality}</span> - <em>Нажми, чтобы узнать подробнее</em></p>
+                <hr>
+                <p class="result-item" data-type="finance" data-number="${finance}"><span>✅ ФИНАНСЫ:</span> <span class="number">${finance}</span> - <em>Нажми, чтобы узнать подробнее</em></p>
+                <hr>
+                <p class="result-item" data-type="relationships" data-number="${relationships}"><span>✅ ОТНОШЕНИЯ:</span> <span class="number">${relationships}</span> - <em>Нажми, чтобы узнать подробнее</em></p>
+                <hr>
+                <p class="result-item" data-type="health" data-number="${health}"><span>✅ ЗДОРОВЬЕ:</span> <span class="number">${health}</span> - <em>Нажми, чтобы узнать подробнее</em></p>
+            `;
+
+            const resultParagraphs = document.querySelectorAll('.result-item');
+            resultParagraphs.forEach(paragraph => {
+                paragraph.addEventListener('click', () => {
+                    const type = paragraph.getAttribute('data-type');
+                    const number = paragraph.getAttribute('data-number');
+                    paragraph.innerHTML = `<span>${getTypeInRussian(type)}:</span> <span class="number">${number}</span>  ${getDescription(type, number)}`;
+                });
+            });
+        }
+
+        function getTypeInRussian(type) {
+            const types = {
+                personality: "✅ ЛИЧНОСТЬ",
+                spirituality: "✅ ДУХОВНОСТЬ",
+                finance: "✅ ФИНАНСЫ",
+                relationships: "✅ ОТНОШЕНИЯ",
+                health: "✅ ЗДОРОВЬЕ"
+            };
+            return types[type];
+        }
+    </script>
+</div>
+</body>
+</html>
